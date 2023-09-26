@@ -6,9 +6,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Shopping List API",
+        title="TASK MANAGEMENT SYSTEM API",
         default_version="v1",
-        description="TIA Shopping List API",
+        description="TIA TASK MANAGEMENT SYSTEM API",
         terms_of_service="#",
         contact=openapi.Contact(email="developers@tunga.com"),
         license=openapi.License(name="BSD License"),
