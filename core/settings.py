@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     # Swagger
     "drf_yasg",
     "coreapi",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",  # corsheaders
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -184,3 +186,11 @@ AUTHENTICATION_BACKENDS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://143.198.103.52",
+]
