@@ -48,4 +48,4 @@ run server
 python manage.py runserver
 ```
 docs
-<a href="https://documenter.getpostman.com/view/11580677/2s9YJW7SM9"> https://documenter.getpostman.com/view/11580677/2s9YJW7SM9 </a># tunga_tia_tms
+<a href="https://documenter.getpostman.com/view/11580677/2s9YJW7SM9"> https://documenter.getpostman.com/view/11580677/2s9YJW7SM9 </a>
