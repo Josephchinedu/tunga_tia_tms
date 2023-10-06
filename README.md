@@ -1,4 +1,5 @@
-# TUNGA TIA PROJECT
+# Tunga Task Management System (TMS)
+This is a project for Tunga TIA
 
 ## run this project
 Clone this project
@@ -26,6 +27,11 @@ create .env file and add the content of .env.example to it
 #
 Database used is postgresql
 #
+
+makemigrations
+```bash
+python manage.py makemigrations main
+```
 
 migrate models
 ```bash

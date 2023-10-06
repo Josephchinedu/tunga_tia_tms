@@ -16,6 +16,11 @@ class Project(models.Model):
 
     @classmethod
     def create(cls, **kwargs):
+        """
+        THIS METHOD CREATES A PROJECT
+        Keyword Arguments:
+            **kwargs {dict} -- project data
+        """
         project = cls.objects.create(**kwargs)
         return project
 

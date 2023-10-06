@@ -47,8 +47,22 @@ from main.serializer import (
 
 
 class CreateAccountApiView(APIView):
+    """
+    CREATE ACCOUNT API VIEW
+
+    BODY PARAMS:
+    {
+        "username": "testuser",
+        "email": "",
+        "password": "testuser",
+        "confirm_password": "testuser"
+    }
+    """
+
+    # initialize serializer class
     serializer_class = CreateAccountSerializer
 
+    # swagger schema
     create_user_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
@@ -82,7 +96,9 @@ class CreateAccountApiView(APIView):
             },
         ),
     }
-
+    # end swagger schema
+    
+    # csrf exempt for cross origin request
     @method_decorator(csrf_exempt)
     @swagger_auto_schema(
         tags=["authentications"],
@@ -90,13 +106,19 @@ class CreateAccountApiView(APIView):
         responses=create_user_response_schema,
     )
     def post(self, request):
+
+        """
+        THIS METHOD ACCEPT POST REQUEST AND CREATE USER ACCOUNT
+        """
+
         serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True) # raise exception if validation fails
 
         username = serializer.validated_data.get("username")
         password = serializer.validated_data.get("password")
         email = serializer.validated_data.get("email")
 
+        # get_user_model returns the user model that is active in this project
         User = get_user_model()
 
         # check if user email or username already exists
@@ -105,11 +127,13 @@ class CreateAccountApiView(APIView):
         elif User.objects.filter(username=username).exists():
             raise exceptions.ValidationError({"username": "Username already exists"})
         else:
+            # create user
             user = User.objects.create(
                 username=username, password=make_password(password), email=email
             )
             user.save()
 
+            # generate tokens for user
             tokenr = TokenObtainPairSerializer().get_token(user)
             tokena = AccessToken().for_user(user)
 
@@ -124,8 +148,20 @@ class CreateAccountApiView(APIView):
 
 
 class LoginApiView(APIView):
+
+    """
+    LOGIN API VIEW
+    Body Params:
+    {
+        "username_or_email": "testuser",
+        "password": "testuser"
+    }
+    """
+
+    # initialize serializer class
     serilaier_class = LoginSerializer
 
+    # swagger schema
     login_schema = openapi.Schema(
         type=openapi.TYPE_OBJECT,
         properties={
@@ -160,13 +196,18 @@ class LoginApiView(APIView):
         ),
     }
 
-    @method_decorator(csrf_exempt)
+    # end swagger schema
+
+    @method_decorator(csrf_exempt) # csrf exempt for cross origin request
     @swagger_auto_schema(
         tags=["authentications"],
         request_body=login_schema,
         responses=login_response_schema,
     )
     def post(self, request):
+        """
+        THIS METHOD ACCEPT POST REQUEST AND LOGIN USER
+        """
         serilaizer = self.serilaier_class(data=request.data)
         serilaizer.is_valid(raise_exception=True)
 
@@ -174,7 +215,7 @@ class LoginApiView(APIView):
         password = serilaizer.validated_data.get("password")
 
         try:
-            user = authenticate(email=username_or_email, password=password)
+            user = authenticate(email=username_or_email, password=password) # authenticate user with email and password
         except Exception as e:
             data = {
                 "error": True,
@@ -198,15 +239,20 @@ class LoginApiView(APIView):
 
 
 class ProjectApiView(APIView):
+    """
+    PROJECT API VIEW
+    """
     authentication_classes = [JWTAuthentication]
     permission_classes = (IsAuthenticated,)
 
     serializer_class = ProjectSerializer
 
     def post(self, request):
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        # create project payload
         create_project_payload = {
             "user": request.user,
             "name": serializer.validated_data.get("name"),

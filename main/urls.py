@@ -8,7 +8,11 @@ from main.views import (
 )
 
 ACCOUNT_URLS = [
+    # for creating account
     path("account/create/", CreateAccountApiView.as_view(), name="create-account"),
+
+
+    # for login
     path("account/login/", LoginApiView.as_view(), name="login"),
 ]
 
